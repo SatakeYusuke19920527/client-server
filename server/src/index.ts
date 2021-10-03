@@ -1,7 +1,6 @@
 import { NextFunction } from "express"
 import { Socket } from "socket.io"
 import express from 'express'
-import { randomInt } from "crypto";
 
 const app = express()
 const server = require("http").Server(app)
@@ -21,17 +20,14 @@ app.use(function(req: express.Request, res:express.Response, next:NextFunction) 
   next();
 });
 
-app.get('/users', (req: Express.Request, res: Express.Response) => {
-    console.log('hello world')
-})
-
 io.on('connection', function (socket: Socket) {
     console.log('A Websocket connection Established');
-    setInterval(() => getApiAndEmit(socket), 1000);
+    setInterval(() => getApiAndEmit(socket), 5000);
 });
 
 const getApiAndEmit = (socket: Socket) => {
-  const response: string = "10";
+  let num: number = Math.floor(Math.random() * 10 + 1)
+  const response: string = num.toString();
   socket.emit("FromAPI", response);
 };
 
