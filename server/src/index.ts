@@ -22,7 +22,7 @@ app.use(function(req: express.Request, res:express.Response, next:NextFunction) 
 
 io.on('connection', function (socket: Socket) {
     console.log('A Websocket connection Established');
-    setInterval(() => getApiAndEmit(socket), 5000);
+    setInterval(() => getApiAndEmit(socket), 10000);
 });
 
 const getApiAndEmit = (socket: Socket) => {
