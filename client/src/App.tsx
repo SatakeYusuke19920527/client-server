@@ -1,29 +1,27 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import socketIOClient from 'socket.io-client';
 import Chart from 'react-apexcharts';
-import Graph from './Graph';
 import './App.css';
+import { useAppSelector, useAppDispatch } from './app/hooks'
+import {selectGraphData, addGraphData} from './features/graphDataSlice'
+
 
 const ENDPOINT = ':3001';
 const App: React.FC = () => {
-  const [count, setCount] = useState<number>(0);
-  const [timing, setTiming] = useState<boolean>(true)
-  const [category, setCategory] = useState<number[]>([
-    1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
-  ]);
-  const [element, setElement] = useState<number[]>([
-    3, 4, 3, 5, 4, 6, 7, 9, 1, 6,
-  ]);
+  const { graphData } = useAppSelector(selectGraphData)
+  const dispatch = useAppDispatch()
+
   useEffect(() => {
     const socket = socketIOClient(ENDPOINT);
     socket.on('FromAPI', (data: number) => {
-      const year = category.slice(-1)[0] + 1;
-      const num = Number(data);
-      setCount((prev) => prev + num);
-      setCategory([...category, category.push(year)]);
-      setElement([...element, element.push(num)]);
+      let dt = new Date()
+      let hour = dt.getHours()
+      let minute = dt.getMinutes()
+      let second = dt.getSeconds()
+      let date = `${hour}:${minute}:${second}`
+      dispatch(addGraphData({ x: date, y: Number(data) }))
     });
-  }, [setElement, setCategory]);
+  }, [dispatch]);
 
   const state = {
     options: {
@@ -32,7 +30,7 @@ const App: React.FC = () => {
         animations: {
           enabled: true,
           dynamicAnimation: {
-            speed: 2000,
+            speed: 1000,
           },
         },
         toolbar: {
@@ -66,19 +64,19 @@ const App: React.FC = () => {
         },
       },
       xaxis: {
-        categories: category,
+        categories: graphData.x,
       },
     },
     series: [
       {
-        data: element,
+        data: graphData.y,
       },
     ],
   };
 
   return (
     <div className="App">
-      <h1>{count}</h1>
+      <h1>アクティブユーザー{graphData.y.slice(-1)[0]}</h1>
       <Chart
         options={state.options}
         series={state.series}
@@ -86,7 +84,6 @@ const App: React.FC = () => {
         width={500}
         height={200}
       />
-      <Graph />
     </div>
   );
 };
