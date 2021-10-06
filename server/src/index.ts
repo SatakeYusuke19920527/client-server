@@ -1,6 +1,5 @@
-import { NextFunction } from "express"
+import express, { NextFunction } from 'express'
 import { Socket } from "socket.io"
-import express from 'express'
 
 const app = express()
 const server = require("http").Server(app)
@@ -22,7 +21,7 @@ app.use(function(req: express.Request, res:express.Response, next:NextFunction) 
 
 io.on('connection', function (socket: Socket) {
     console.log('A Websocket connection Established');
-    setInterval(() => getApiAndEmit(socket), 10000);
+    setInterval(() => getApiAndEmit(socket), 3000);
 });
 
 const getApiAndEmit = (socket: Socket) => {
@@ -33,5 +32,5 @@ const getApiAndEmit = (socket: Socket) => {
 
 const PORT = process.env.SERVER_PORT || 3001;
 server.listen(PORT, () => {
-    console.log(`port : ${PORT}`)
+    console.log(`port is running : ${PORT}`)
 })

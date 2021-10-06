@@ -40,7 +40,7 @@ const Graph: React.FC = () => {
           enabled: false,
         },
         stroke: {
-          curve: 'stepline',
+          curve: 'smooth',
         },
         title: {
           text: 'Dynamic Updating Chart',
@@ -66,14 +66,15 @@ const Graph: React.FC = () => {
     },
     series: [
       {
+        name: "login user",
         data: graphData.y,
       },
     ],
   };
 
   return (
-    <div className="App">
-      <h1>アクティブユーザー{graphData.y.slice(-1)[0]}</h1>
+    <div>
+      <h1>アクティブユーザー数{graphData.y.slice(-1)[0]}</h1>
       <Chart
         options={state.options}
         series={state.series}
