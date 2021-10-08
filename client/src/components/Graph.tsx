@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import socketIOClient from 'socket.io-client';
 import Chart from 'react-apexcharts';
-import { useAppSelector, useAppDispatch } from '../app/hooks'
+import { useAppSelector, useAppDispatch } from '../hooks/useRtk'
 import { selectGraphData, addGraphData } from '../features/graphDataSlice'
 const ENDPOINT = ':3001';
 const Graph: React.FC = () => {
