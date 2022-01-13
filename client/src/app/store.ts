@@ -1,9 +1,9 @@
 import { configureStore, ThunkAction, Action } from '@reduxjs/toolkit';
-import graphDataReducer from '../features/graphDataSlice';
+import graphReducer from '../features/graphSlice';
 
 export const store = configureStore({
   reducer: {
-    data: graphDataReducer,
+    graphs: graphReducer,
   },
 });
 

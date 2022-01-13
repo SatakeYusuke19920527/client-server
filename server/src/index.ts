@@ -1,6 +1,7 @@
 import express, { NextFunction } from 'express'
 import { Socket } from "socket.io"
 import v1Router from './routes/v1/index';
+import v2Router from './routes/v2/index';
 
 const app = express()
 const server = require("http").Server(app)
@@ -26,6 +27,7 @@ app.use(express.urlencoded({ extended: true }));
 
 // ルーティング
 app.use('/v1', v1Router);
+app.use('/v2', v2Router);
 
 io.on('connection', function (socket: Socket) {
     console.log('A Websocket connection Established');
