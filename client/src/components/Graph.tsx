@@ -1,22 +1,27 @@
 import React, { useEffect } from 'react';
 import socketIOClient from 'socket.io-client';
 import Chart from 'react-apexcharts';
-import { useAppSelector, useAppDispatch } from '../app/hooks'
-import { selectGraphData, addGraphData } from '../features/graphDataSlice'
+import '../App.css';
+import { useAppSelector, useAppDispatch } from '../app/hooks';
+import { selectGraphData, addGraphData } from '../features/graphDataSlice';
 const ENDPOINT = ':3001';
 const Graph: React.FC = () => {
-  const { graphData } = useAppSelector(selectGraphData)
-  const dispatch = useAppDispatch()
+  const { graphData } = useAppSelector(selectGraphData);
+  const dispatch = useAppDispatch();
 
   useEffect(() => {
     const socket = socketIOClient(ENDPOINT);
+    socket.on('Test', (data) => {
+      console.log(data); //msgのデータ
+      socket.emit('weather', { server: 'test', test: 'server' });
+    });
     socket.on('FromAPI', (data: number) => {
-      let dt = new Date()
-      let hour = dt.getHours()
-      let minute = dt.getMinutes()
-      let second = dt.getSeconds()
-      let date = `${hour}:${minute}:${second}`
-      dispatch(addGraphData({ x: date, y: Number(data) }))
+      let dt = new Date();
+      let hour = dt.getHours();
+      let minute = dt.getMinutes();
+      let second = dt.getSeconds();
+      let date = `${hour}:${minute}:${second}`;
+      dispatch(addGraphData({ x: date, y: Number(data) }));
     });
   }, [dispatch]);
 
@@ -66,7 +71,7 @@ const Graph: React.FC = () => {
     },
     series: [
       {
-        name: "login user",
+        name: 'login user',
         data: graphData.y,
       },
     ],

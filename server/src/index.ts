@@ -20,7 +20,12 @@ app.use(function(req: express.Request, res:express.Response, next:NextFunction) 
 });
 
 io.on('connection', function (socket: Socket) {
-    console.log('A Websocket connection Established');
+  console.log('A Websocket connection Established');
+  console.log('A Websocket connection Established---');
+  socket.emit("test","誰かが接続しました");
+	socket.on('weather',function(data){
+		console.log(data, "---");
+	});
     setInterval(() => getApiAndEmit(socket), 3000);
 });
 
